@@ -11,22 +11,9 @@ _configs = {
     'dir': '~/Music',
 }
 
-
-def merge(defaults, override):
-    r = {}
-    for k, v in defaults.items():
-        if k in override:
-            if isinstance(v, dict):
-                r[k] = merge(v, override[k])
-            else:
-                r[k] = override[k]
-        else:
-            r[k] = v
-    return r
-
 try:
     import config_override
-    _configs = merge(_configs, config_override.configs)
+    _configs = dict(_configs, **config_override.configs)
 except ImportError:
     pass
 
@@ -56,4 +43,3 @@ def toDict(d):
     return D
 
 configs = toDict(_configs)
-print(configs.user)

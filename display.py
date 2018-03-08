@@ -185,6 +185,11 @@ def fatal(fatal_text):
         command(False)
 
 
+def log(log_text, level):
+    log_func = (info, warning, error, fatal)
+    log_func[level](log_text)
+
+
 def init_screen(_user, _version, _server):
     _clear_screen()
     global user, version, server
