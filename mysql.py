@@ -21,7 +21,7 @@ class MysqlConnector():
         self.table = dict()
  
     def sql_connect(self, command, ex_mes):
-        print(command)
+        info(command)
         try:
             conn = sql.connect(**conn_kw)
             cur = conn.cursor()
@@ -44,7 +44,7 @@ class MysqlConnector():
         if not success:
             return
         elif count[0][0]!=0:
-            ex('SongExistsWaring', 1)
+            self.ex('SongExistsWaring', 1)
             return
         # add_new_list(belong_to_list)
         _other_singer = '' if other_singer=='' else ', other_singer'
@@ -60,7 +60,7 @@ class MysqlConnector():
 
     def get_song_list(self):
         sql = "SELECT music_name, singer FROM music WHERE user_name = '" + self.conn_kw.user + "'"
-        all_songs_list, success = sql_connect(sql, 'cannot get all songs list')
+        all_songs_list, success = self.sql_connect(sql, 'cannot get all songs list')
         if success:
             self.table['all_songs'] = all_songs_list
 
@@ -70,7 +70,7 @@ class MysqlConnector():
         if not success:
             return
         elif count[0][0]!=0:
-            ex('ListExistsWaring', 1)
+            self.ex('ListExistsWaring', 1)
             return
         sql = "INSERT INTO lists(user_name, list_name)VALUES(" + self.decorate(self.conn_kw.user, False) + self.decorate(list_name) + ")"
         self.sql_connect(sql, 'cannot add list %s' % list_name)
@@ -84,6 +84,7 @@ class MysqlConnector():
         singer = ''
         ex_mes = 'cannot get current song'
         proc_name = 'get_current_song'
+        info(proc_name, self.conn_kw.user)
         try:
             conn = sql.connect(**conn_kw)
             cur = conn.cursor()

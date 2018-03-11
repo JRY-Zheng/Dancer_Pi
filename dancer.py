@@ -2,11 +2,17 @@ import threading
 from display import *
 from music import *
 from config import configs
+from handler import handle
 
-music_player = MusicPlayer('Lost star')
+music_player = MusicPlayer()
 
 init_screen(configs.user, configs.version, configs.server)
-music_player.start()
-# handle command
-music_player.join()
-print ('Bye!')
+play = threading.Thread(target=music_player.run_player, name='play music')
+play.start()
+while True:
+    cmd = command()
+    handle(cmd)
+    if cmd=='quit' or cmd=='kill':
+        break
+play.join()
+print('Bye!')

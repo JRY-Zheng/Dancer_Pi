@@ -9,6 +9,7 @@ _configs = {
     'version': 'v 0.0.1',
     # 配置音乐存放目录',
     'dir': '~/Music',
+    'ignore': []
 }
 
 try:

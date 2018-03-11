@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import os
+import sys
 import time
 
 #   格式：\033[显示方式;前景色;背景色m
@@ -79,7 +80,7 @@ STYLE = {
 #   2         ERROR FATAL
 #   3         FATAL      
 
-LEVEL = 0
+LEVEL = 2
 
 WELCOME = '''Dear %s, Welcome to Dancer %s. You have logged in remote server %s.
 Date: %s, login time: %s. 
@@ -148,6 +149,7 @@ def _clear_screen():
 
 def command(rt = True):
     print(_use_style('%s@%s $ ' % (user, server), fore = 'cyan'), end='')
+    sys.stdout.flush()
     if rt: return input().split(' ')
 
 
@@ -157,32 +159,32 @@ def lyric(lyric_text, indent=10):
     command(False)
 
 
-def info(info_text):
+def info(info_text, flush = False):
     if LEVEL<=0:
         _clear_line()
         print(_use_style('INFO    :'+info_text, fore = 'green'))
-        command(False)
+        if flush: command(False)
 
 
-def warning(warning_text):
+def warning(warning_text, flush = False):
     if LEVEL<=1:
         _clear_line()
         print(_use_style('WARNING :'+warning_text, fore = 'yellow'))
-        command(False)
+        if flush: command(False)
 
 
-def error(error_text):
+def error(error_text, flush = False):
     if LEVEL<=2:
         _clear_line()
         print(_use_style('ERROR   :'+error_text, fore = 'red'))
-        command(False)
+        if flush: command(False)
 
 
-def fatal(fatal_text):
+def fatal(fatal_text, flush = False):
     if LEVEL<=3:
         _clear_line()
         print(_use_style('FATAL   :'+fatal_text, back = 'red'))
-        command(False)
+        if flush: command(False)
 
 
 def log(log_text, level):
